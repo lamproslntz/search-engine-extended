@@ -36,8 +36,9 @@ public class CISIFileHandler {
 
         List<Map<String, String>> docs = new ArrayList<>();
 
+        Scanner scanner = null;
         try {
-            Scanner scanner = new Scanner(file);
+            scanner = new Scanner(file);
             scanner.useDelimiter("\\.I "); // separate each document using the doc ID (.I flag)
 
             // docs are dictionaries with the following fields: (ID, title, author, abstract)
@@ -75,6 +76,11 @@ public class CISIFileHandler {
         } catch (IOException e) {
             System.err.println("[ERROR] file.FileHandler.readCISIDocuments - Problem occurred while reading the documents.");
             e.printStackTrace();
+
+            if (scanner != null) {
+                scanner.close();
+            }
+
             return null;
         }
 
@@ -104,8 +110,9 @@ public class CISIFileHandler {
 
         List<Map<String, String>> queries = new ArrayList<>();
 
+        Scanner scanner = null;
         try {
-            Scanner scanner = new Scanner(file);
+            scanner = new Scanner(file);
             scanner.useDelimiter("\\.I"); // separate each query using the query ID (.I flag)
 
             // queries are dictionaries with the following fields: (ID, text)
@@ -133,6 +140,11 @@ public class CISIFileHandler {
         } catch (IOException e) {
             System.err.println("[ERROR] file.FileHandler.readCISIQueries - Problem occurred while reading the queries.");
             e.printStackTrace();
+
+            if (scanner != null) {
+                scanner.close();
+            }
+
             return null;
         }
 
