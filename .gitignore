@@ -1,3 +1,7 @@
+# Misc
+.idea
+search-engine-extended.iml
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
