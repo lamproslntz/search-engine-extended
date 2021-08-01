@@ -18,7 +18,7 @@ import java.util.Map;
 /**
  * @author Lampros Lountzis
  */
-public class Indexer {
+public class Indexer implements IndexerInterface {
 
     private final String indexDir;
     private IndexWriter writer;
@@ -58,8 +58,8 @@ public class Indexer {
             // create the fields of the doc and add them to the doc object
             // the fields of each document are (ID, title, author, abstract)
             luceneDoc.add(new StoredField("id", doc.get("id"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.NO));
-            luceneDoc.add(new StringField("author", doc.get("author"), Field.Store.NO)); // indexed, not tokenized
+            luceneDoc.add(new StoredField("title", doc.get("title"))); // not indexed, just stored for retrieval
+            luceneDoc.add(new StoredField("author", doc.get("author"))); // not indexed, just stored for retrieval
             luceneDoc.add(new TextField("abstract", doc.get("abstract"), Field.Store.NO));
 
             writer.addDocument(luceneDoc);
