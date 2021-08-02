@@ -1,5 +1,6 @@
 package index;
 
+import analyzer.ExtendedKeywordAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
@@ -37,7 +38,7 @@ public class Indexer implements IndexerInterface {
         // analyzer for the normalization of documents
         // all fields - except "author" which uses KeywordAnalyzer - use EnglishAnalyzer
         Map<String, Analyzer> analyzerPerField = new HashMap<>();
-        analyzerPerField.put("author", new KeywordAnalyzer());
+        analyzerPerField.put("author", new ExtendedKeywordAnalyzer());
         PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new EnglishAnalyzer(), analyzerPerField);
 
         // similarity function for document-query similarity and scoring

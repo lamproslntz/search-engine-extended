@@ -1,5 +1,6 @@
 package index;
 
+import analyzer.ExtendedKeywordAnalyzer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;
@@ -45,7 +46,7 @@ public class Searcher implements SearcherInterface {
             // analyzer used for the normalization of the query
             // all fields - except "author" which uses KeywordAnalyzer - use EnglishAnalyzer
             Map<String, Analyzer> analyzerPerField = new HashMap<>();
-            analyzerPerField.put("author", new KeywordAnalyzer());
+            analyzerPerField.put("author", new ExtendedKeywordAnalyzer());
             PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new EnglishAnalyzer(), analyzerPerField);
 
             // create a searcher for searching the index, and configure it
