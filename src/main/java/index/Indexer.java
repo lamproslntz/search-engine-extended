@@ -1,7 +1,9 @@
 package index;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
+import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.document.*;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -12,6 +14,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +35,10 @@ public class Indexer implements IndexerInterface {
         Directory dir = FSDirectory.open(Paths.get(indexDir));
 
         // analyzer for the normalization of documents
-        Analyzer analyzer = new EnglishAnalyzer();
+        // all fields - except "author" which uses KeywordAnalyzer - use EnglishAnalyzer
+        Map<String, Analyzer> analyzerPerField = new HashMap<>();
+        analyzerPerField.put("author", new KeywordAnalyzer());
+        PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new EnglishAnalyzer(), analyzerPerField);
 
         // similarity function for document-query similarity and scoring
         Similarity similarity = new BM25Similarity();
@@ -58,8 +64,8 @@ public class Indexer implements IndexerInterface {
             // create the fields of the doc and add them to the doc object
             // the fields of each document are (ID, title, author, abstract)
             luceneDoc.add(new StoredField("id", doc.get("id"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.YES)); // indexed, analyzed, stored
-            luceneDoc.add(new StringField("author", doc.get("author"), Field.Store.YES)); // indexed, not analyzed, stored
+            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.NO)); // indexed, analyzed, stored
+            luceneDoc.add(new StringField("author", doc.get("author"), Field.Store.NO)); // indexed, not analyzed, stored
             luceneDoc.add(new TextField("abstract", doc.get("abstract"), Field.Store.NO)); // indexed, analyzed, not stored
 
             writer.addDocument(luceneDoc);
