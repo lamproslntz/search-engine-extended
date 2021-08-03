@@ -23,6 +23,7 @@ public class SearchEngine {
     private static final String qrels = "qrels.txt";
 
     public static void main(String[] args) {
+
         // read documents
         System.out.println("[INFO] SearchEngine.main - Reading documents...");
         List<Map<String, String>> docs = readCISIDocuments("C:\\Users\\lampr\\Downloads\\cisi\\CISI.ALL");
@@ -30,6 +31,7 @@ public class SearchEngine {
         // read queries
         System.out.println("[INFO] SearchEngine.main - Reading queries...");
         List<Map<String, String>> queries = readCISIQueries("C:\\Users\\lampr\\Downloads\\cisi\\CISI.QRY");
+
 
         TextCleaner cleaner = new TextCleaner(false, true);
         // process documents
@@ -67,7 +69,7 @@ public class SearchEngine {
 
         Map<String, List<Pair<Document, Float>>> results = null;
         try {
-            results = searcher.search(queries, 10);
+            results = searcher.search(queries, 20);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -85,7 +87,7 @@ public class SearchEngine {
     }
 
     /**
-     * Read CISI dataset documents. <br>
+     * Read CISI dataset documents.
      * The documents are of the form: (ID, title, author, abstract). The cross-references section is skipped.
      *
      * @param path CISI documents file path.
@@ -106,40 +108,61 @@ public class SearchEngine {
         }
 
         List<Map<String, String>> docs = new ArrayList<>();
+        try (BufferedReader reader = Files.newBufferedReader(file)) {
 
-        try (Scanner scanner = new Scanner(file)) {
-            scanner.useDelimiter("\\.I "); // separate each document using the doc ID (.I flag)
+            String line = reader.readLine();
+            if (line == null) return null;
+            do {
+                String docID;
+                String docTitle = "";
+                String docAuthor = "";
+                String docAbstract = "";
+                Map<String, String> doc = new HashMap<>(); // docs are dictionaries with the following fields: (ID, title, author, abstract)
 
-            // docs are dictionaries with the following fields: (ID, title, author, abstract)
-            Map<String, String> doc;
-            String text;
-            while (scanner.hasNext()) {
-                text = scanner.next();
-
-                doc = new HashMap<>();
-
-                // read doc ID
-                // doc ID is between .I and .T flags
-                String docID = text.substring(0, text.indexOf(".T")).trim();
+                // extract query ID
+                docID = line.split(" ")[1];
                 doc.put("id", docID);
 
-                // read doc title
-                // doc title is between .T and .A flags
-                String docTitle = text.substring(text.indexOf(".T") + 2, text.indexOf(".A")).trim();
-                doc.put("title", docTitle);
+                boolean extract = true;
+                String field = "";
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith(".I")) { // when new query ID is found, go to next doc
+                        break;
+                    }
 
-                // read doc author
-                // doc author is between .A and .W flags
-                String docAuthor = text.substring(text.indexOf(".A") + 2, text.indexOf(".W")).trim();
-                doc.put("author", docAuthor);
+                    if (line.startsWith(".T")) { // allow to extract doc title field
+                        extract = true;
+                        field = "title";
+                        continue;
+                    } else if (line.startsWith(".A")) { // allow to extract doc author field
+                        extract = true;
+                        field = "author";
+                        continue;
+                    } else if (line.startsWith(".W")) { // allow to extract doc abstract field
+                        extract = true;
+                        field = "abstract";
+                        continue;
+                    } else if (line.startsWith(".B") || line.startsWith(".C") || line.startsWith(".K")) { // don't allow to extract these doc fields
+                        extract = false;
+                        continue;
+                    }
 
-                // read doc abstract
-                // doc abstract is between .W and .X flags
-                String docAbstract = text.substring(text.indexOf(".W") + 2, text.indexOf(".X")).trim();
-                doc.put("abstract", docAbstract);
+                    if (extract) {
+                        if (field.equals("title")) { // extract doc title
+                            docTitle = docTitle + " " + line;
+                            doc.put("title", docTitle);
+                        } else if (field.equals("author")) { // extract doc author
+                            docAuthor = docAuthor + " " + line;
+                            doc.put("author", docAuthor);
+                        } else if (field.equals("abstract")) { // extract doc abstract
+                            docAbstract = docAbstract + " " + line;
+                            doc.put("abstract", docAbstract);
+                        }
+                    }
+                }
 
                 docs.add(doc);
-            }
+            } while (line != null);
 
         } catch (IOException e) {
             System.err.println("[ERROR] readCISIDocuments - Problem occurred while reading the documents.");
@@ -151,7 +174,7 @@ public class SearchEngine {
     }
 
     /**
-     * Read CISI dataset queries. <br>
+     * Read CISI dataset queries.
      * The queries are of the form: (ID, text).
      *
      * @param path CISI queries file path.
@@ -172,40 +195,41 @@ public class SearchEngine {
         }
 
         List<Map<String, String>> queries = new ArrayList<>();
+        try (BufferedReader reader = Files.newBufferedReader(file)) {
 
-        try (Scanner scanner = new Scanner(file);) {
-            scanner.useDelimiter("\\.I"); // separate each query using the query ID (.I flag)
-
-            // queries are dictionaries with the following fields: (ID, text)
-            Map<String, String> query;
-            String text;
-            while (scanner.hasNext()) {
-                text = scanner.next();
-
-                query = new HashMap<>();
-
-                // read query ID
-                // query ID is either between .I and .W flags or .I and .T flags
+            String line = reader.readLine();
+            if (line == null) return null;
+            do {
                 String queryID;
-                if (text.contains(".T")) {
-                    queryID = text.substring(0, text.indexOf(".T")).trim();
-                } else {
-                    queryID = text.substring(0, text.indexOf(".W")).trim();
-                }
+                String queryText = "";
+                Map<String, String> query = new HashMap<>(); // queries are dictionaries with the following fields: (ID, text)
+
+                // extract query ID
+                queryID = line.split(" ")[1];
                 query.put("id", queryID);
 
-                // read query text
-                // query text is either between .W and next query or .W and .B flags
-                String queryText;
-                if (text.contains(".B")) {
-                    queryText = text.substring(text.indexOf(".W") + 2, text.lastIndexOf(".B")).trim();
-                } else {
-                    queryText = text.substring(text.indexOf(".W") + 2).trim();
+                boolean extract = true;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith(".I")) { // when new query ID is found, go to next query
+                        break;
+                    }
+
+                    if (line.startsWith(".W")) { // allow to extract query text field
+                        extract = true;
+                        continue;
+                    } else if (line.startsWith(".T") || line.startsWith(".A") || line.startsWith(".B")) { // don't allow to extract these query fields
+                        extract = false;
+                        continue;
+                    }
+
+                    if (extract) { // extract query text
+                        queryText = queryText + " " + line;
+                        query.put("text", queryText);
+                    }
                 }
-                query.put("text", queryText);
 
                 queries.add(query);
-            }
+            } while (line != null);
 
         } catch (IOException e) {
             System.err.println("[ERROR] readCISIQueries - Problem occurred while reading the queries.");
@@ -290,7 +314,7 @@ public class SearchEngine {
             for (String queryID : results.keySet()) {
                 for (Pair<Document, Float> pair : results.get(queryID)) {
                     // results file contains records of the form: (query_id, iteration, doc_id, rank, similarity, run_id)
-                    record = queryID + " 0 " + pair.getKey().getField("id").stringValue() + " 0 " + pair.getValue() + " IRmodel";
+                    record = queryID + " 0 " + pair.getKey().getField("id").stringValue() + " 0 " + pair.getValue() + " STANDARD";
                     writer.write(record);
                     writer.newLine();
                 }
