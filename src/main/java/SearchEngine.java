@@ -69,7 +69,7 @@ public class SearchEngine {
 
         Map<String, List<Pair<Document, Float>>> results = null;
         try {
-            results = searcher.search(queries, 20);
+            results = searcher.search(queries, 50);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -214,10 +214,10 @@ public class SearchEngine {
                         break;
                     }
 
-                    if (line.startsWith(".W")) { // allow to extract query text field
+                    if (line.startsWith(".T") || line.startsWith(".A") || line.startsWith(".W")) { // allow to extract doc title, author, text fields
                         extract = true;
                         continue;
-                    } else if (line.startsWith(".T") || line.startsWith(".A") || line.startsWith(".B")) { // don't allow to extract these query fields
+                    } else if (line.startsWith(".B")) { // don't allow to extract these query fields
                         extract = false;
                         continue;
                     }
