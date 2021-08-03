@@ -10,6 +10,7 @@ import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -40,7 +41,7 @@ public class Searcher implements SearcherInterface {
     }
 
     public Map<String, List<Pair<Document, Float>>> search(List<Map<String, String>> queries, int k) throws IOException, ParseException {
-        String field = "abstract"; // the searchable field
+        String[] fields = {"title", "author", "abstract"}; // the searchable field
 
         if (reader != null) {
             // analyzer used for the normalization of the query
@@ -54,7 +55,7 @@ public class Searcher implements SearcherInterface {
             searcher.setSimilarity(new BM25Similarity());
 
             // create a query parser on the searchable field
-            QueryParser parser = new QueryParser(field, analyzer);
+            QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 
             Query query;
             // results are of the form: (queryID, [(doc, score), (doc, score), ...])
