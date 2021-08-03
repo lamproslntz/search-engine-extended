@@ -1,12 +1,9 @@
 package index;
 
-import analyzer.ExtendedKeywordAnalyzer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
-import org.apache.lucene.analysis.miscellaneous.PerFieldAnalyzerWrapper;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -41,14 +38,11 @@ public class Searcher implements SearcherInterface {
     }
 
     public Map<String, List<Pair<Document, Float>>> search(List<Map<String, String>> queries, int k) throws IOException, ParseException {
-        String[] fields = {"title", "author", "abstract"}; // the searchable field
+        String[] fields = {"title", "abstract"}; // the searchable fields
 
         if (reader != null) {
             // analyzer used for the normalization of the query
-            // all fields - except "author" which uses KeywordAnalyzer - use EnglishAnalyzer
-            Map<String, Analyzer> analyzerPerField = new HashMap<>();
-            analyzerPerField.put("author", new ExtendedKeywordAnalyzer());
-            PerFieldAnalyzerWrapper analyzer = new PerFieldAnalyzerWrapper(new EnglishAnalyzer(), analyzerPerField);
+            Analyzer analyzer = new EnglishAnalyzer();
 
             // create a searcher for searching the index, and configure it
             IndexSearcher searcher = new IndexSearcher(reader);

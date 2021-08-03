@@ -20,8 +20,6 @@ import java.util.*;
  */
 public class SearchEngine {
 
-    private static final String qrels = "qrels.txt";
-
     public static void main(String[] args) {
 
         // read documents
@@ -69,7 +67,7 @@ public class SearchEngine {
 
         Map<String, List<Pair<Document, Float>>> results = null;
         try {
-            results = searcher.search(queries, 50);
+            results = searcher.search(queries, 30);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -214,10 +212,10 @@ public class SearchEngine {
                         break;
                     }
 
-                    if (line.startsWith(".T") || line.startsWith(".A") || line.startsWith(".W")) { // allow to extract doc title, author, text fields
+                    if (line.startsWith(".T") || line.startsWith(".W")) { // allow to extract doc title, text fields
                         extract = true;
                         continue;
-                    } else if (line.startsWith(".B")) { // don't allow to extract these query fields
+                    } else if (line.startsWith(".B") || line.startsWith(".A")) { // don't allow to extract these query fields
                         extract = false;
                         continue;
                     }
@@ -262,6 +260,7 @@ public class SearchEngine {
             return false;
         }
 
+        String qrels = "qrels.txt";
         Path outDir = Paths.get(filePath);
         if (!Files.isDirectory(outDir)) { // check if path links to an existing directory
             System.err.println("[ERROR] createRelevantFile - " + filePath + " isn't a directory.");
