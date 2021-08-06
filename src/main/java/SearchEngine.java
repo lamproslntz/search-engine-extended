@@ -37,7 +37,7 @@ public class SearchEngine {
         // process queries
         cleaner.clean(queries, new String[]{"text"});
 
-        Indexer indexer = new Indexer("C:\\Users\\lampr\\Downloads\\index");
+        Indexer indexer = new Indexer(".\\src\\main\\resources\\index");
 
         try {
             indexer.create();
@@ -57,7 +57,7 @@ public class SearchEngine {
             e.printStackTrace();
         }
 
-        Searcher searcher = new Searcher("C:\\Users\\lampr\\Downloads\\index");
+        Searcher searcher = new Searcher(".\\src\\main\\resources\\index");
 
         try {
             searcher.open();
@@ -67,7 +67,7 @@ public class SearchEngine {
 
         Map<String, List<Pair<Document, Float>>> results = null;
         try {
-            results = searcher.search(queries, 30);
+            results = searcher.search(queries, 20);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {

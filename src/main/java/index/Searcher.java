@@ -1,9 +1,9 @@
 package index;
 
+import analyzers.WordnetSynonymAnalyzer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -42,7 +42,7 @@ public class Searcher implements SearcherInterface {
 
         if (reader != null) {
             // analyzer used for the normalization of the query
-            Analyzer analyzer = new EnglishAnalyzer();
+            Analyzer analyzer = new WordnetSynonymAnalyzer();
 
             // create a searcher for searching the index, and configure it
             IndexSearcher searcher = new IndexSearcher(reader);
