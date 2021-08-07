@@ -2,6 +2,9 @@
 .idea
 search-engine-extended.iml
 
+# WordNet
+src/main/resources/prolog
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
