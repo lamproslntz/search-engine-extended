@@ -5,6 +5,9 @@ search-engine-extended.iml
 # WordNet
 src/main/resources/prolog
 
+# fastText
+src/main/resources/fasttext-en
+
 target/
 pom.xml.tag
 pom.xml.releaseBackup
