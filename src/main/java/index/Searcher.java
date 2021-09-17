@@ -1,6 +1,5 @@
 package index;
 
-import analyzers.Word2VecSynonymAnalyzer;
 import analyzers.WordnetSynonymAnalyzer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,7 +42,7 @@ public class Searcher implements SearcherInterface {
 
         if (reader != null) {
             // analyzer used for the normalization of the query
-            Analyzer analyzer = new Word2VecSynonymAnalyzer();
+            Analyzer analyzer = new WordnetSynonymAnalyzer();
 
             // create a searcher for searching the index, and configure it
             IndexSearcher searcher = new IndexSearcher(reader);
