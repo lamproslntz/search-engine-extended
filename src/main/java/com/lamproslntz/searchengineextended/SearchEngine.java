@@ -1,6 +1,8 @@
-import cleaner.TextCleaner;
-import index.Indexer;
-import index.Searcher;
+package com.lamproslntz.searchengineextended;
+
+import com.lamproslntz.searchengineextended.cleaner.TextCleaner;
+import com.lamproslntz.searchengineextended.index.Indexer;
+import com.lamproslntz.searchengineextended.index.Searcher;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;

@@ -1,4 +1,4 @@
-package index;
+package com.lamproslntz.searchengineextended.index;
 
 import java.io.IOException;
 import java.util.List;

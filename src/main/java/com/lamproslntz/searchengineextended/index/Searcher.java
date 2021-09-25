@@ -1,6 +1,6 @@
-package index;
+package com.lamproslntz.searchengineextended.index;
 
-import analyzers.Word2VecSynonymAnalyzer;
+import com.lamproslntz.searchengineextended.analyzers.Word2VecSynonymAnalyzer;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;

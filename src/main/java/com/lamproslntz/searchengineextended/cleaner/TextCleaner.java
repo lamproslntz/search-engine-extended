@@ -1,4 +1,4 @@
-package cleaner;
+package com.lamproslntz.searchengineextended.cleaner;
 
 import java.util.List;
 import java.util.Locale;

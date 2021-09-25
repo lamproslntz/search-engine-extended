@@ -1,4 +1,4 @@
-package index;
+package com.lamproslntz.searchengineextended.index;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;

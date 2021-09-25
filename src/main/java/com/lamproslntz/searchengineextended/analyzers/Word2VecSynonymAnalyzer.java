@@ -1,24 +1,22 @@
-package analyzers;
+package com.lamproslntz.searchengineextended.analyzers;
 
+import com.lamproslntz.searchengineextended.filters.Word2VecSynonymFilter;
 import org.apache.lucene.analysis.*;
 import org.apache.lucene.analysis.en.EnglishPossessiveFilter;
 import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
-import org.apache.lucene.analysis.synonym.SynonymGraphFilter;
-import org.apache.lucene.analysis.synonym.SynonymMap;
-import org.apache.lucene.analysis.synonym.WordnetSynonymParser;
+import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
+import org.deeplearning4j.models.word2vec.Word2Vec;
 
-import java.io.*;
-import java.text.ParseException;
+import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author Lampros Lountzis
  */
-public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
+public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {
 
     /**
      * An unmodifiable set containing some common English words that are not usually useful
@@ -40,10 +38,15 @@ public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
 
     private final CharArraySet stemExclusionSet;
 
+    // Word2Vec model
+    public Word2Vec vec = WordVectorSerializer.readWord2VecModel(".\\src\\main\\resources\\fasttext-en\\wiki-news-300d-1M.vec");
+
+    public double minAccuracy = 0.98;
+
     /**
      * Builds an analyzer with the default stop words: {@link #getDefaultStopSet}.
      */
-    public WordnetSynonymAnalyzer() {
+    public Word2VecSynonymAnalyzer() {
         this(ENGLISH_STOP_WORDS_SET);
     }
 
@@ -52,7 +55,7 @@ public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
      *
      * @param stopwords a stopword set
      */
-    public WordnetSynonymAnalyzer(CharArraySet stopwords) {
+    public Word2VecSynonymAnalyzer(CharArraySet stopwords) {
         this(stopwords, CharArraySet.EMPTY_SET);
     }
 
@@ -64,7 +67,7 @@ public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
      * @param stopwords a stopword set
      * @param stemExclusionSet a set of terms not to be stemmed
      */
-    public WordnetSynonymAnalyzer(CharArraySet stopwords, CharArraySet stemExclusionSet) {
+    public Word2VecSynonymAnalyzer(CharArraySet stopwords, CharArraySet stemExclusionSet) {
         super(stopwords);
         this.stemExclusionSet = CharArraySet.unmodifiableSet(CharArraySet.copy(stemExclusionSet));
     }
@@ -93,24 +96,11 @@ public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
      */
     @Override
     protected TokenStreamComponents createComponents(String fieldName) {
-        SynonymMap synonymMap;
-        try {
-            Reader reader = new InputStreamReader(new FileInputStream(".\\src\\main\\resources\\prolog\\wn_s.pl"));
-
-            SynonymMap.Builder parser = new WordnetSynonymParser(true, true, new StandardAnalyzer(CharArraySet.EMPTY_SET));
-            ((WordnetSynonymParser) parser).parse(reader);
-
-            synonymMap = parser.build();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            return null;
-        }
-
         final Tokenizer source = new StandardTokenizer();
         TokenStream result = new EnglishPossessiveFilter(source);
         result = new LowerCaseFilter(result);
         result = new StopFilter(result, stopwords);
-        result = new SynonymGraphFilter(result, synonymMap, true);
+        result = new Word2VecSynonymFilter(result, vec, minAccuracy);
         if(!stemExclusionSet.isEmpty()) {
             result = new SetKeywordMarkerFilter(result, stemExclusionSet);
         }
@@ -122,4 +112,5 @@ public final class WordnetSynonymAnalyzer extends StopwordAnalyzerBase {
     protected TokenStream normalize(String fieldName, TokenStream in) {
         return new LowerCaseFilter(in);
     }
+
 }

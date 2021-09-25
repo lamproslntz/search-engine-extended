@@ -1,4 +1,4 @@
-package utils;
+package com.lamproslntz.searchengineextended.utils;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
