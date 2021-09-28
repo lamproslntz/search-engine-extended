@@ -1,8 +1,8 @@
 :root {
     --white: #fff;
     --black: #000;
-    --night-dive: rgba(0, 52, 88, 0.6);
-    --aurora-red: rgb(133,1,33);
+    --night-dive: rgb(0, 52, 88);
+    --night-dive-trans: rgba(0, 52, 88, 0.6);
 }
 
 /* General */
@@ -33,7 +33,7 @@ body {
 
 /* Navigation Bar */
 .navbar {
-    background: var(--night-dive);
+    background: var(--night-dive-trans);
     color: var(--white);
     position: fixed;
     top: 0;
@@ -57,17 +57,54 @@ section {
     scroll-snap-align: center;
 }
 
-section h1 {
-    font-size: 4rem;
-}
-
-section p {
-    font-size: 1.5rem;
-}
-
 /* Section -- Search */
 section#search {
     background: url(../img/img-background.jpg) no-repeat center center/cover;
+}
+
+form {
+    width: 50%;
+    height: 8%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-box {
+    padding: 5px 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 60%;
+    min-height: 60%;
+    font-size: 15px;
+    border: 4px solid var(--black);
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+}
+
+.search-box:hover{
+    border: 4px solid var(--white);
+}
+
+.search-btn{
+    padding: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    min-width: 15%;
+    min-height: 70%;
+    font-size: 15px;
+    background: var(--black);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    transition: 0.3s;
+}
+
+button:hover{
+    background: var(--white);
+    color: var(--night-dive);
 }
 
 /* Section -- Results */
