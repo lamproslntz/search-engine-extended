@@ -91,7 +91,7 @@ form {
     padding: 10px;
     margin-left: 10px;
     margin-right: 10px;
-    min-width: 15%;
+    min-width: 20%;
     min-height: 70%;
     font-size: 15px;
     background: var(--black);
@@ -108,10 +108,69 @@ button:hover{
 }
 
 /* Section -- Results */
+section#results {
+    height: fit-content;
+}
 
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media screen and (max-width:600px) {
+/* Large devices */
+@media screen and (max-width: 992px) {
+    /* Navigation Bar */
     .creator {
         display: none;
+    }
+
+    /* Section -- Search */
+    form {
+        width: 80%;
+    }
+
+    .search-box {
+        min-width: 50%;
+    }
+
+    .search-btn {
+        min-width: 15%;
+    }
+}
+
+/* Medium devices */
+@media screen and (max-width: 768px) {
+    /* Navigation Bar */
+    .creator {
+        display: none;
+    }
+
+    /* Section -- Search */
+    form {
+        width: 80%;
+    }
+
+    .search-box {
+        min-width: 50%;
+    }
+
+    .search-btn {
+        min-width: 20%;
+    }
+}
+
+/* Extra small devices */
+@media only screen and (max-width: 600px) {
+    /* Navigation Bar */
+    .creator {
+        display: none;
+    }
+
+    /* Section -- Search */
+    form {
+        width: 80%;
+    }
+
+    .search-box {
+        min-width: 50%;
+    }
+
+    .search-btn {
+        min-width: 30%;
     }
 }
