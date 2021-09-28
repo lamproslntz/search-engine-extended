@@ -1,0 +1,80 @@
+:root {
+    --white: #fff;
+    --black: #000;
+    --night-dive: rgba(0, 52, 88, 0.6);
+    --aurora-red: rgb(133,1,33);
+}
+
+/* General */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+body {
+    color: var(--black);
+    background: var(--white);
+    font-family: 'Ubuntu', sans-serif;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+}
+
+/* Navigation Bar */
+.navbar {
+    background: var(--night-dive);
+    color: var(--white);
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+}
+
+/* Section -- General */
+section {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    scroll-snap-align: center;
+}
+
+section h1 {
+    font-size: 4rem;
+}
+
+section p {
+    font-size: 1.5rem;
+}
+
+/* Section -- Search */
+section#search {
+    background: url(img-background.jpg) no-repeat center center/cover;
+}
+
+/* Section -- Results */
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media screen and (max-width:600px) {
+    .creator {
+        display: none;
+    }
+}
