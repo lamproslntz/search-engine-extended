@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### fastText ###
-**/src/main/**/fasttext-en/
+**/src/main/**/fasttext-en/wiki-news-300d-1M.vec
 
 ### STS ###
 .apt_generated
