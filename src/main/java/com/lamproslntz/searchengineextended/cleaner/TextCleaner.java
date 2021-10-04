@@ -43,7 +43,7 @@ public class TextCleaner implements TextCleanerInterface {
                     }
 
                     // remove redundant spaces
-                    obj.put(field, obj.get(field).replaceAll("\s+", " "));
+                    obj.put(field, obj.get(field).replaceAll("\\s+", " "));
                     obj.put(field, obj.get(field).trim());
                 }
             }
