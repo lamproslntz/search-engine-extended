@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-    <link href="../static/css/style.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
     <title>Extending Search Engines with Synonyms</title>
 </head>
 <body>
@@ -27,21 +27,18 @@
             </form>
         </section>
         <section id="results">
-            <div class="result">
+            <div class="result" th:each="result : ${results}">
                 <div class="id">
-                    <p><b>ID:</b> 1</p>
+                    <p><b>ID:</b> <span th:text="${result.id}"></span></p>
                 </div>
                 <div class="title">
-                    <p><b>Title:</b> Lampros</p>
+                    <p><b>Title:</b> <span th:text="${result.title}"></span></p>
                 </div>
                 <div class="abstract">
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique minima totam cum delectus veniam eligendi dolores animi, illum maiores quod cumque dolor tempore et! Consectetur debitis accusamus sint eveniet similique.
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique minima totam cum delectus veniam eligendi dolores animi, illum maiores quod cumque dolor tempore et! Consectetur debitis accusamus sint eveniet similique.
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique minima totam cum delectus veniam eligendi dolores animi, illum maiores quod cumque dolor tempore et! Consectetur debitis accusamus sint eveniet similique.
-                    </p>
+                    <p th:text="${result.abstract}"></p>
                 </div>
                 <div class="score">
-                    <p><b>Score:</b> 10</p>
+                    <p><b>Score:</b> <span th:text="${result.score}"></span></p>
                 </div>
             </div>
         </section>
