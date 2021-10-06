@@ -20,16 +20,16 @@ import java.util.Map;
  */
 public class Indexer implements IndexerInterface {
 
-    private final String indexDir;
+    private final String INDEX_DIR;
     private IndexWriter writer;
 
     public Indexer(String indexDir) {
-        this.indexDir = indexDir;
+        this.INDEX_DIR = indexDir;
     }
 
     public void create() throws IOException {
         // create directory in file system for index
-        Directory dir = FSDirectory.open(Paths.get(indexDir));
+        Directory dir = FSDirectory.open(Paths.get(INDEX_DIR));
 
         // analyzer for the normalization of documents
         Analyzer analyzer = new EnglishAnalyzer();
@@ -58,9 +58,9 @@ public class Indexer implements IndexerInterface {
             // create the fields of the doc and add them to the doc object
             // the fields of each document are (ID, title, author, abstract)
             luceneDoc.add(new StoredField("id", doc.get("id"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.NO)); // indexed, analyzed, not stored
+            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.YES)); // indexed, analyzed, stored for retrieval
             luceneDoc.add(new StoredField("author", doc.get("author"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("abstract", doc.get("abstract"), Field.Store.NO)); // indexed, analyzed, not stored
+            luceneDoc.add(new TextField("abstract", doc.get("abstract"), Field.Store.YES)); // indexed, analyzed, stored for retrieval
 
             writer.addDocument(luceneDoc);
         }
