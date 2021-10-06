@@ -10,33 +10,33 @@ import java.util.regex.PatternSyntaxException;
  */
 public class TextCleaner implements TextCleanerInterface {
 
-    private final boolean toLowercase;
-    private final boolean removeSymbols;
-    private final String symbols;
+    private final boolean TO_LOWERCASE;
+    private final boolean REMOVE_SYMBOLS;
+    private final String SYMBOLS;
 
     public TextCleaner(boolean toLowercase, boolean removeSymbols) {
-        this.toLowercase = toLowercase;
-        this.removeSymbols = removeSymbols;
-        this.symbols = "[^a-zA-Z0-9]";
+        this.TO_LOWERCASE = toLowercase;
+        this.REMOVE_SYMBOLS = removeSymbols;
+        this.SYMBOLS = "[^a-zA-Z0-9]";
     }
 
     public TextCleaner(boolean toLowercase, boolean removeSymbols, String symbols) {
-        this.toLowercase = toLowercase;
-        this.removeSymbols = removeSymbols;
-        this.symbols = symbols;
+        this.TO_LOWERCASE = toLowercase;
+        this.REMOVE_SYMBOLS = removeSymbols;
+        this.SYMBOLS = symbols;
     }
 
     public void clean(List<Map<String, String>> objects, String[] fields) {
         for (Map<String, String> obj : objects) {
             for (String field : fields) { // for each obj field to be cleaned
                 if (obj.containsKey(field)) { // if the field exists, clean it
-                    if (toLowercase) {
+                    if (TO_LOWERCASE) {
                         obj.put(field, obj.get(field).toLowerCase(Locale.ROOT));
                     }
 
-                    if (removeSymbols) {
+                    if (REMOVE_SYMBOLS) {
                         try {
-                            obj.put(field, obj.get(field).replaceAll(symbols, " "));
+                            obj.put(field, obj.get(field).replaceAll(SYMBOLS, " "));
                         } catch (PatternSyntaxException e) {
                             System.out.println("[ERROR] cleaner.TextCleaner.clean - Invalid regular expression pattern.");
                         }
