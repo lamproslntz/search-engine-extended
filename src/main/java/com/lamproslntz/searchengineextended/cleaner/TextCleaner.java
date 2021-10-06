@@ -50,4 +50,16 @@ public class TextCleaner implements TextCleanerInterface {
         }
     }
 
+    public void fix(List<Map<String, String>> objects, String[] fields) {
+        for (Map<String, String> obj : objects) {
+            for (String field : fields) { // for each obj field to be fixed
+                if (obj.containsKey(field)) { // if the field exists, fix it
+                    // remove redundant spaces
+                    obj.put(field, obj.get(field).replaceAll("\\s+", " "));
+                    obj.put(field, obj.get(field).trim());
+                }
+            }
+        }
+    }
+
 }
