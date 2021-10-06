@@ -1,7 +1,7 @@
 package com.lamproslntz.searchengineextended.index;
 
-import org.apache.commons.lang3.tuple.Pair;
-import org.apache.lucene.document.Document;
+import com.lamproslntz.searchengineextended.dto.RetrievedItem;
+import com.lamproslntz.searchengineextended.dto.UserQuery;
 import org.apache.lucene.queryparser.classic.ParseException;
 
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.List;
  */
 public interface SearcherInterface {
 
-    List<Pair<Document, Float>> search(String userQuery, int k) throws IOException, ParseException;
+    List<RetrievedItem> search(UserQuery userQuery, int k) throws IOException, ParseException;
 
     void open() throws IOException;
 

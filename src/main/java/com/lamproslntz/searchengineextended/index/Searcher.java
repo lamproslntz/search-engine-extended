@@ -1,6 +1,8 @@
 package com.lamproslntz.searchengineextended.index;
 
 import com.lamproslntz.searchengineextended.analyzers.Word2VecSynonymAnalyzer;
+import com.lamproslntz.searchengineextended.dto.RetrievedItem;
+import com.lamproslntz.searchengineextended.dto.UserQuery;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.Analyzer;
@@ -35,8 +37,7 @@ public class Searcher implements SearcherInterface {
         this.INDEX_DIR = indexDir;
     }
 
-    //List<Map<String, String>> queries
-    public List<Pair<Document, Float>> search(String userQuery, int k) throws IOException, ParseException {
+    public List<RetrievedItem> search(UserQuery userQuery, int k) throws IOException, ParseException {
         String[] fields = {"title_norm", "abstract_norm"}; // the searchable fields
 
         if (reader != null) {
@@ -51,14 +52,14 @@ public class Searcher implements SearcherInterface {
             QueryParser parser = new MultiFieldQueryParser(fields, analyzer);
 
             // parse the query (query is a dictionary with (ID, text))
-            Query query = parser.parse(userQuery);
+            Query query = parser.parse(userQuery.getQuery());
             // results are of the form: [(doc, score), (doc, score), ...]
-            List<Pair<Document, Float>> results = new ArrayList<>();
+            List<RetrievedItem> results = new ArrayList<>();
             // hits returned by searching the index
             TopDocs hits = searcher.search(query, k);
             for (ScoreDoc scoreDoc : hits.scoreDocs) {
                 Document doc = searcher.doc(scoreDoc.doc);
-                results.add(new MutablePair<>(doc, scoreDoc.score));
+                results.add(new RetrievedItem(doc, scoreDoc.score));
             }
 
             return results;
