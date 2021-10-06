@@ -56,11 +56,13 @@ public class Indexer implements IndexerInterface {
             Document luceneDoc = new Document();
 
             // create the fields of the doc and add them to the doc object
-            // the fields of each document are (ID, title, author, abstract)
+            // the fields of each document are (ID, title, title_norm, author, abstract, abstract_norm)
             luceneDoc.add(new StoredField("id", doc.get("id"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("title", doc.get("title"), Field.Store.YES)); // indexed, analyzed, stored for retrieval
+            luceneDoc.add(new StoredField("title", doc.get("title"))); //  not indexed, just stored for retrieval
+            luceneDoc.add(new TextField("title_norm", doc.get("title"), Field.Store.NO)); // indexed, analyzed, not stored
             luceneDoc.add(new StoredField("author", doc.get("author"))); // not indexed, just stored for retrieval
-            luceneDoc.add(new TextField("abstract", doc.get("abstract"), Field.Store.YES)); // indexed, analyzed, stored for retrieval
+            luceneDoc.add(new StoredField("abstract", doc.get("abstract"))); //  not indexed, just stored for retrieval
+            luceneDoc.add(new TextField("abstract_norm", doc.get("abstract"), Field.Store.NO)); // indexed, analyzed, not stored
 
             writer.addDocument(luceneDoc);
         }
