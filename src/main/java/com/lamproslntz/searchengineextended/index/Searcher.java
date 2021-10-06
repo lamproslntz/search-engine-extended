@@ -37,7 +37,7 @@ public class Searcher implements SearcherInterface {
 
     //List<Map<String, String>> queries
     public List<Pair<Document, Float>> search(String userQuery, int k) throws IOException, ParseException {
-        String[] fields = {"title", "abstract"}; // the searchable fields
+        String[] fields = {"title_norm", "abstract_norm"}; // the searchable fields
 
         if (reader != null) {
             // analyzer used for the normalization of the query
