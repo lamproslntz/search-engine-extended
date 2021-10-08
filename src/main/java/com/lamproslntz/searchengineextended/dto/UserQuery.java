@@ -7,6 +7,9 @@ public class UserQuery {
 
     private String query;
 
+    public UserQuery() {
+    }
+
     public UserQuery(String query) {
         this.query = query;
     }
