@@ -1,13 +1,11 @@
 package com.lamproslntz.searchengineextended;
 
-import com.lamproslntz.searchengineextended.cleaner.TextCleaner;
-import com.lamproslntz.searchengineextended.index.Indexer;
 import com.lamproslntz.searchengineextended.index.Searcher;
-
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.queryparser.classic.ParseException;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,74 +13,41 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Lampros Lountzis
  */
-public class SearchEngine {
+@SpringBootApplication
+public class Application {
 
     public static void main(String[] args) {
+                // initialize web application
+        SpringApplication.run(Application.class, args);
 
-        // read documents
-        System.out.println("[INFO] SearchEngine.main - Reading documents...");
-        List<Map<String, String>> docs = readCISIDocuments("C:\\Users\\lampr\\Downloads\\cisi\\CISI.ALL");
+//        try {
+//            searcher.open();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        // read queries
-        System.out.println("[INFO] SearchEngine.main - Reading queries...");
-        List<Map<String, String>> queries = readCISIQueries("C:\\Users\\lampr\\Downloads\\cisi\\CISI.QRY");
-
-
-        TextCleaner cleaner = new TextCleaner(false, true);
-        // process documents
-        cleaner.clean(docs, new String[]{"title", "author", "abstract"});
-        // process queries
-        cleaner.clean(queries, new String[]{"text"});
-
-        Indexer indexer = new Indexer(".\\src\\main\\resources\\index");
-
-        try {
-            indexer.create();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            indexer.index(docs);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            indexer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Searcher searcher = new Searcher(".\\src\\main\\resources\\index");
-
-        try {
-            searcher.open();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Map<String, List<Pair<Document, Float>>> results = null;
-        try {
-            results = searcher.search(queries, 20);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            searcher.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        boolean flag = writeResults(results, "C:\\Users\\lampr\\Downloads\\cisi\\results.txt");
+//        Map<String, List<Pair<Document, Float>>> results = null;
+//        try {
+//            results = searcher.search(queries, 20);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//
+//        try {
+//            searcher.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -150,12 +115,14 @@ public class SearchEngine {
                     if (extract) {
                         if (field.equals("title")) { // extract doc title
                             docTitle = docTitle + " " + line;
+                            doc.put("title_norm", docTitle);
                             doc.put("title", docTitle);
                         } else if (field.equals("author")) { // extract doc author
                             docAuthor = docAuthor + " " + line;
                             doc.put("author", docAuthor);
                         } else if (field.equals("abstract")) { // extract doc abstract
                             docAbstract = docAbstract + " " + line;
+                            doc.put("abstract_norm", docAbstract);
                             doc.put("abstract", docAbstract);
                         }
                     }
@@ -278,7 +245,7 @@ public class SearchEngine {
             String record;
             while ((line = reader.readLine()) != null) {
                 // split each line on whitespace and/or tab
-                tokens = line.trim().split("\s+|\t+");
+                tokens = line.trim().split("\\s+|\t+");
                 // qrels.txt records are of the form: (query_id, iteration, doc_id, relevance)
                 record = tokens[0] + " " + tokens[2] + " " + tokens[1] + " " + "1";
 
@@ -328,4 +295,5 @@ public class SearchEngine {
 
         return true;
     }
+
 }
