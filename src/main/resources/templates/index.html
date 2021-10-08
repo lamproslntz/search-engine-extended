@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu&display=swap" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
+    <link th:href="@{/css/style.css}" rel="stylesheet">
     <title>Extending Search Engines with Synonyms</title>
 </head>
 <body>
@@ -21,8 +21,8 @@
             </div>
         </nav>
         <section id="search">
-            <form method="post">
-                <input class="search-box" type="text" name="query" placeholder="Search...">
+            <form action="/search" th:action="@{/search}" th:object="${userQuery}" method="post">
+                <input class="search-box" type="text" th:field="*{query}" name="query" placeholder="Search...">
                 <button class="search-btn" type="submit" > Search </button>
             </form>
         </section>
@@ -35,7 +35,7 @@
                     <p><b>Title:</b> <span th:text="${result.title}"></span></p>
                 </div>
                 <div class="abstract">
-                    <p th:text="${result.abstract}"></p>
+                    <p th:text="${result.content}"></p>
                 </div>
                 <div class="score">
                     <p><b>Score:</b> <span th:text="${result.score}"></span></p>
