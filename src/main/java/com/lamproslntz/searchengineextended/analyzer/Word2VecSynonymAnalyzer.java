@@ -43,8 +43,8 @@ public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {
      * Builds an analyzer with the default stop words: {@link #getDefaultStopSet}, and the given Word2Vec model
      * and minimum model accuracy.
      *
-     * @param model
-     * @param minAccuracy
+     * @param model Word2Vec model
+     * @param minAccuracy minimum model accuracy for word similarity
      */
     public Word2VecSynonymAnalyzer(Word2Vec model, double minAccuracy) {
         this(ENGLISH_STOP_WORDS_SET, model, minAccuracy);
@@ -54,8 +54,8 @@ public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {
      * Builds an analyzer with the given stop words, Word2Vec model and minimum model accuracy.
      *
      * @param stopwords a stopword set
-     * @param model
-     * @param minAccuracy
+     * @param model Word2Vec model
+     * @param minAccuracy minimum model accuracy for word similarity
      */
     public Word2VecSynonymAnalyzer(CharArraySet stopwords, Word2Vec model, double minAccuracy) {
         this(stopwords, CharArraySet.EMPTY_SET, model, minAccuracy);
@@ -68,8 +68,8 @@ public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {
      *
      * @param stopwords a stopword set
      * @param stemExclusionSet a set of terms not to be stemmed
-     * @param model
-     * @param minAccuracy
+     * @param model Word2Vec model
+     * @param minAccuracy minimum model accuracy for word similarity
      */
     public Word2VecSynonymAnalyzer(CharArraySet stopwords, CharArraySet stemExclusionSet, Word2Vec model, double minAccuracy) {
         super(stopwords);

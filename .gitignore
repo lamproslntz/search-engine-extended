@@ -5,6 +5,7 @@ target/
 
 ### fastText ###
 **/src/main/**/fasttext-en/wiki-news-300d-1M.vec
+**/src/main/**/prolog/wn_s.pl
 
 ### STS ###
 .apt_generated
