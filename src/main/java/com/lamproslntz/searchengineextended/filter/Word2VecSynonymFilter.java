@@ -1,4 +1,4 @@
-package com.lamproslntz.searchengineextended.filters;
+package com.lamproslntz.searchengineextended.filter;
 
 import java.io.IOException;
 import java.util.Collection;
