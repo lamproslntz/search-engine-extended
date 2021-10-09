@@ -1,4 +1,4 @@
-package com.lamproslntz.searchengineextended;
+package com.lamproslntz.searchengineextended.controller;
 
 import com.lamproslntz.searchengineextended.dto.RetrievedItem;
 import com.lamproslntz.searchengineextended.dto.UserQuery;

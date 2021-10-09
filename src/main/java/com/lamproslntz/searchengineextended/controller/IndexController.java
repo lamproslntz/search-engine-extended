@@ -1,4 +1,4 @@
-package com.lamproslntz.searchengineextended;
+package com.lamproslntz.searchengineextended.controller;
 
 import com.lamproslntz.searchengineextended.dto.UserQuery;
 import org.springframework.stereotype.Controller;
@@ -14,6 +14,7 @@ public class IndexController {
     @GetMapping("/")
     public String loadIndex(Model model) {
         model.addAttribute("userQuery", new UserQuery());
+
         return "index";
     }
 
