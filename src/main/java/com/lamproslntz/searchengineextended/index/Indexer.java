@@ -67,4 +67,8 @@ public class Indexer implements IndexerInterface {
             writer.addDocument(luceneDoc);
         }
     }
+
+    public String getIndexDirectory() {
+        return INDEX_DIR;
+    }
 }
