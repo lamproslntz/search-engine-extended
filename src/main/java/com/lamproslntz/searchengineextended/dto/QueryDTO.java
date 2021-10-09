@@ -3,14 +3,14 @@ package com.lamproslntz.searchengineextended.dto;
 /**
  * @author Lampros Lountzis
  */
-public class UserQuery {
+public class QueryDTO {
 
     private String query;
 
-    public UserQuery() {
+    public QueryDTO() {
     }
 
-    public UserQuery(String query) {
+    public QueryDTO(String query) {
         this.query = query;
     }
 
@@ -27,9 +27,9 @@ public class UserQuery {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        UserQuery userQuery = (UserQuery) o;
+        QueryDTO queryDTO = (QueryDTO) o;
 
-        return getQuery().equals(userQuery.getQuery());
+        return getQuery().equals(queryDTO.getQuery());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class UserQuery {
 
     @Override
     public String toString() {
-        return "UserQuery { " +
+        return "QueryDTO { " +
                 "query='" + query + '\'' +
                 " }";
     }

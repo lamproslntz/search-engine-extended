@@ -5,7 +5,7 @@ import org.apache.lucene.document.Document;
 /**
  * @author Lampros Lountzis
  */
-public class RetrievedItem {
+public class DocumentDTO {
 
     private String id;
     private String title;
@@ -14,7 +14,7 @@ public class RetrievedItem {
 
     private String score;
 
-    public RetrievedItem(String id, String title, String author, String content, String score) {
+    public DocumentDTO(String id, String title, String author, String content, String score) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -22,7 +22,7 @@ public class RetrievedItem {
         this.score = score;
     }
 
-    public RetrievedItem(Document document, float score) {
+    public DocumentDTO(Document document, float score) {
         this.id = document.get("id");
         this.title = document.get("title");
         this.author = document.get("author");
@@ -75,7 +75,7 @@ public class RetrievedItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RetrievedItem that = (RetrievedItem) o;
+        DocumentDTO that = (DocumentDTO) o;
 
         if (!getId().equals(that.getId())) return false;
         if (!getTitle().equals(that.getTitle())) return false;
@@ -96,7 +96,7 @@ public class RetrievedItem {
 
     @Override
     public String toString() {
-        return "UserResult { " +
+        return "DocumentDTO { " +
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
