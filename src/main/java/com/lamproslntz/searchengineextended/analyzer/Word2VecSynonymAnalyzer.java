@@ -6,7 +6,6 @@ import org.apache.lucene.analysis.en.EnglishPossessiveFilter;
 import org.apache.lucene.analysis.en.PorterStemFilter;
 import org.apache.lucene.analysis.miscellaneous.SetKeywordMarkerFilter;
 import org.apache.lucene.analysis.standard.StandardTokenizer;
-import org.deeplearning4j.models.embeddings.loader.WordVectorSerializer;
 import org.deeplearning4j.models.word2vec.Word2Vec;
 
 import java.io.Reader;
@@ -37,41 +36,46 @@ public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {
 
     private final CharArraySet stemExclusionSet;
 
-    // Word2Vec model
-    private static final Word2Vec model;
-    static {
-        model = WordVectorSerializer.readWord2VecModel(".\\src\\main\\resources\\fasttext-en\\wiki-news-300d-1M.vec");
-    }
-
-    private final double minAccuracy = 0.98;
+    private final Word2Vec model;
+    private final double minAccuracy;
 
     /**
-     * Builds an analyzer with the default stop words: {@link #getDefaultStopSet}.
+     * Builds an analyzer with the default stop words: {@link #getDefaultStopSet}, and the given Word2Vec model
+     * and minimum model accuracy.
+     *
+     * @param model
+     * @param minAccuracy
      */
-    public Word2VecSynonymAnalyzer() {
-        this(ENGLISH_STOP_WORDS_SET);
+    public Word2VecSynonymAnalyzer(Word2Vec model, double minAccuracy) {
+        this(ENGLISH_STOP_WORDS_SET, model, minAccuracy);
     }
 
     /**
-     * Builds an analyzer with the given stop words.
+     * Builds an analyzer with the given stop words, Word2Vec model and minimum model accuracy.
      *
      * @param stopwords a stopword set
+     * @param model
+     * @param minAccuracy
      */
-    public Word2VecSynonymAnalyzer(CharArraySet stopwords) {
-        this(stopwords, CharArraySet.EMPTY_SET);
+    public Word2VecSynonymAnalyzer(CharArraySet stopwords, Word2Vec model, double minAccuracy) {
+        this(stopwords, CharArraySet.EMPTY_SET, model, minAccuracy);
     }
 
     /**
-     * Builds an analyzer with the given stop words. If a non-empty stem exclusion set is
-     * provided this analyzer will add a {@link SetKeywordMarkerFilter} before
+     * Builds an analyzer with the given stop words, Word2Vec model and minimum model accuracy.
+     * If a non-empty stem exclusion set is provided this analyzer will add a {@link SetKeywordMarkerFilter} before
      * stemming.
      *
      * @param stopwords a stopword set
      * @param stemExclusionSet a set of terms not to be stemmed
+     * @param model
+     * @param minAccuracy
      */
-    public Word2VecSynonymAnalyzer(CharArraySet stopwords, CharArraySet stemExclusionSet) {
+    public Word2VecSynonymAnalyzer(CharArraySet stopwords, CharArraySet stemExclusionSet, Word2Vec model, double minAccuracy) {
         super(stopwords);
         this.stemExclusionSet = CharArraySet.unmodifiableSet(CharArraySet.copy(stemExclusionSet));
+        this.model = model;
+        this.minAccuracy = minAccuracy;
     }
 
     /**
