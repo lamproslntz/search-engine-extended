@@ -1,6 +1,5 @@
 package com.lamproslntz.searchengineextended;
 
-import com.lamproslntz.searchengineextended.index.Searcher;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.document.Document;
@@ -22,33 +21,11 @@ import java.util.Map;
  * @author Lampros Lountzis
  */
 @SpringBootApplication
-public class Application {
+public class SearchEngineApplication {
 
     public static void main(String[] args) {
-                // initialize web application
-        SpringApplication.run(Application.class, args);
-
-//        try {
-//            searcher.open();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        Map<String, List<Pair<Document, Float>>> results = null;
-//        try {
-//            results = searcher.search(queries, 20);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//            searcher.close();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
+        // initialize web application
+        SpringApplication.run(SearchEngineApplication.class, args);
     }
 
     /**
