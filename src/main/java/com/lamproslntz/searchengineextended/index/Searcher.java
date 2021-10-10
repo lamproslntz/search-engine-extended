@@ -4,6 +4,7 @@ import com.lamproslntz.searchengineextended.analyzer.Word2VecSynonymAnalyzer;
 import com.lamproslntz.searchengineextended.dto.DocumentDTO;
 import com.lamproslntz.searchengineextended.dto.QueryDTO;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -26,6 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Represents a Searcher module, that searches a Lucene index given a user query. The searcher queries the normalized
+ * title and abstract fields with the help of {@link MultiFieldQueryParser} and {@link BM25Similarity} is used for
+ * document-query similarity. During query time, the query terms are expanded with their synonyms, based on word
+ * embeddings, using {@link Word2VecSynonymAnalyzer}.
+ *
  * @author Lampros Lountzis
  */
 public class Searcher implements SearcherInterface {
@@ -36,12 +42,34 @@ public class Searcher implements SearcherInterface {
     private final Word2Vec MODEL;
     private final double MIN_ACCURACY;
 
+    /**
+     * Initializes a Searcher.
+     *
+     * @param indexDir the directory path where the Lucene index files are hosted.
+     * @param model Word2Vec model.
+     * @param minAccuracy word similarity minimum accuracy for Word2Vec model.
+     */
     public Searcher(String indexDir, Word2Vec model, double minAccuracy) {
         this.INDEX_DIR = indexDir;
         this.MODEL = model;
         this.MIN_ACCURACY = minAccuracy;
     }
 
+    /**
+     * Searches a Lucene index.
+     * The document look-up is done using the title and the abstract normalized fields with the help of
+     * {@link MultiFieldQueryParser}, {@link Word2VecSynonymAnalyzer} is used for query analysis
+     * (query terms are expanded with their synonyms based on word embeddings), {@link BM25Similarity} is
+     * used for document-query similarity.
+     *
+     * @param userQuery the user's query.
+     * @param k number of top documents to be retrieved.
+     *
+     * @return list of top k retrieved documents, with respect to the user's query.
+     *
+     * @throws IOException if the Lucene index cannot be searched.
+     * @throws ParseException if the user's query cannot be parsed.
+     */
     public List<DocumentDTO> search(QueryDTO userQuery, int k) throws IOException, ParseException {
         String[] fields = {"title_norm", "abstract_norm"}; // the searchable fields
 
@@ -73,23 +101,42 @@ public class Searcher implements SearcherInterface {
         return null;
     }
 
+    /**
+     * Opens the Lucene index to be used by this Searcher.
+     *
+     * @throws IOException if the Lucene index cannot be opened.
+     */
     public void open() throws IOException {
         Directory dir = FSDirectory.open(Paths.get(INDEX_DIR));
         reader = DirectoryReader.open(dir);
     }
 
+    /**
+     * Frees persistent resources used by this Searcher.
+     *
+     * @throws IOException if the Searcher is closed.
+     */
     public void close() throws IOException {
         reader.close();
     }
 
+    /**
+     * @return the directory path where the Lucene index files are hosted.
+     */
     public String getIndexDirectory() {
         return INDEX_DIR;
     }
 
+    /**
+     * @return Word2Vec model.
+     */
     public Word2Vec getModel() {
         return MODEL;
     }
 
+    /**
+     * @return word similarity minimum accuracy for Word2Vec model.
+     */
     public double getMinAccuracy() {
         return MIN_ACCURACY;
     }

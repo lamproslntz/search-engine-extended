@@ -27,14 +27,19 @@ public class Indexer implements IndexerInterface {
     private final String INDEX_DIR;
     private IndexWriter writer;
 
+    /**
+     * Initializes an Indexer.
+     *
+     * @param indexDir the directory path where the Lucene index files will be hosted.
+     */
     public Indexer(String indexDir) {
         this.INDEX_DIR = indexDir;
     }
 
     /**
      * Creates a Lucene index.
-     * The index files are hosted in the file system, an English analyzer is used for text analysis
-     * and Okapi BM25 similarity is used for document-query similarity.
+     * The index files are hosted in the file system, {@link EnglishAnalyzer} is used for text analysis
+     * and {@link BM25Similarity} is used for document-query similarity.
      *
      * @throws IOException if the directory cannot host the index files.
      */
@@ -95,7 +100,7 @@ public class Indexer implements IndexerInterface {
     }
 
     /**
-     * @return the directory path, where the index files are hosted.
+     * @return the directory path where the Lucene index files are hosted.
      */
     public String getIndexDirectory() {
         return INDEX_DIR;

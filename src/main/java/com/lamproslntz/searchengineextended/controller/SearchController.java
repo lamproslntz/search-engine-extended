@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
+ * Controller for handling query submission and look-up.
+ *
  * @author Lampros Lountzis
  */
 @RestController
@@ -20,11 +22,23 @@ public class SearchController {
 
     private final Searcher searcher;
 
+    /**
+     * Loads Word2Vec model based on fastText word embeddings (wiki-news-300d-1M.vec),
+     * and initializes a Searcher object for searching a Lucene index.
+     */
     public SearchController() {
         Word2Vec model = WordVectorSerializer.readWord2VecModel("src/main/resources/fasttext-en/wiki-news-300d-1M.vec");
         this.searcher = new Searcher("src/main/resources/index", model, 0.98);
     }
 
+    /**
+     * Searches index for relevant documents with respect to the user query. The Searcher returns
+     * the top 20 relevant documents and updates the results section (in index.html).
+     *
+     * @param queryDTO user query.
+     *
+     * @return updated page view (index.html) with the relevant documents (data) from the Model.
+     */
     @PostMapping("/search")
     public ModelAndView search(@ModelAttribute("userQuery") QueryDTO queryDTO) {
         try {
