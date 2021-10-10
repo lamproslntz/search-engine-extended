@@ -1,6 +1,8 @@
 package com.lamproslntz.searchengineextended.dto;
 
 /**
+ * Encapsulates user query information.
+ *
  * @author Lampros Lountzis
  */
 public class QueryDTO {

@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
+ * Analyzer for English that can handle word synonyms using word embeddings.
+ *
  * @author Lampros Lountzis
  */
 public final class Word2VecSynonymAnalyzer extends StopwordAnalyzerBase  {

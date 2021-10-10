@@ -3,6 +3,10 @@ package com.lamproslntz.searchengineextended.dto;
 import org.apache.lucene.document.Document;
 
 /**
+ * Encapsulates retrieved document information.
+ * Documents consist of the ID, the title, the author, the abstract (or content) and a relevance score,
+ * with respect to the user query.
+ *
  * @author Lampros Lountzis
  */
 public class DocumentDTO {
