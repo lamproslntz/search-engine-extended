@@ -84,7 +84,7 @@ public class SearchEngineApplication {
                         extract = true;
                         field = "abstract";
                         continue;
-                    } else if (line.startsWith(".B") || line.startsWith(".C") || line.startsWith(".K")) { // don't allow to extract these doc fields
+                    } else if (line.startsWith(".X") || line.startsWith(".B") || line.startsWith(".C") || line.startsWith(".K")) { // don't allow to extract these doc fields
                         extract = false;
                         continue;
                     }
