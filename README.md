@@ -1,5 +1,9 @@
 # Extending Search Engines with Synonyms
 
+<p align="center">
+  <img src="/report/img/ir-system-architecture.jpg" alt="Information Retrieval System Architecture"/>
+</p>
+
 ## Table of Contents
 * [About the Project](#about-the-project)
 * [Dataset](#dataset)
@@ -46,6 +50,15 @@ mvnw spring-boot:run
 Then, on the browser, visit ``` http://localhost:8080/ ``` to open the web page.
 
 ## Demo
+1. Write and submit your query.
+<p align="center">
+  <img src="/report/img/demo-1.png" alt="Demo pt.1"/>
+</p>
+
+2. Scroll down to see the top 20 relevant documents, with respect to your query.
+<p align="center">
+  <img src="/report/img/demo-2.png" alt="Demo pt.2"/>
+</p>
 
 ## License
 Distributed under the MIT License. See [LICENSE.md](LICENSE.md) for more information
